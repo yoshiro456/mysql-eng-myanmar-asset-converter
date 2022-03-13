@@ -71,7 +71,7 @@ def mym_to_eng_convert():
 
 def combine_both(eng_to_mym, mym_to_eng):
     all_dict = []
-    count = 0
+    count = 1
 
     for key, value in eng_to_mym.items():
         all_dict.append({'id': count, 'word': key, 'content': value})
