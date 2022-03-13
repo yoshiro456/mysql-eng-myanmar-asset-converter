@@ -18,7 +18,8 @@ def get_connection():
 
 
 def query_find_all(cursor, table):
-    cursor.execute('SELECT * FROM {t}'.format(t=table))
+    cursor.execute(
+        'SELECT `Word`, `state`, `def` FROM {t}'.format(t=table))
 
 
 def write_to_file(filename, content):
@@ -35,13 +36,14 @@ def eng_to_mym_convert():
 
     eng_mym_dict = {}
     for i in result:
-        word = i[1]
-        content = Rabbit.zg2uni(i[3]).replace('|', '')
+        word = i[0]
+        state = i[1]
+        content = Rabbit.zg2uni(i[2]).replace('|', '')
 
         if (i in eng_mym_dict):
-            eng_mym_dict[word] += '\n{s}'.format(content)
+            eng_mym_dict[word] += '\n({x}) {y}'.format(x=state, y=content)
         else:
-            eng_mym_dict[word] = content
+            eng_mym_dict[word] = '({x}) {y}'.format(x=state, y=content)
 
     return eng_mym_dict
 
@@ -55,13 +57,14 @@ def mym_to_eng_convert():
 
     mym_eng_dict = {}
     for i in result:
-        word = Rabbit.zg2uni(i[1]).replace('|', '')
-        content = i[3]
+        word = Rabbit.zg2uni(i[0]).replace('|', '')
+        state = i[1]
+        content = i[2]
 
         if (i in mym_eng_dict):
-            mym_eng_dict[word] += '\n{s}'.format(content)
+            mym_eng_dict[word] += '\n({x}) {y}'.format(x=state, y=content)
         else:
-            mym_eng_dict[word] = content
+            mym_eng_dict[word] = '({x}) {y}'.format(x=state, y=content)
 
     return mym_eng_dict
 
